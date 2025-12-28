@@ -5,9 +5,14 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase";
+import { getSupabase } from "@/lib/supabase";
 
 export async function POST(request: NextRequest) {
+  const supabase = getSupabase();
+  if (!supabase) {
+    return NextResponse.json({ views: 0, message: "Supabase not configured" });
+  }
+
   try {
     const { slug } = await request.json();
 
@@ -15,7 +20,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Slug is required" }, { status: 400 });
     }
 
-    // 先尝试获取现有记录
     const { data: existing } = await supabase
       .from("page_views")
       .select("views")
@@ -23,7 +27,6 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (existing) {
-      // 更新现有记录
       const { data, error } = await supabase
         .from("page_views")
         .update({ views: existing.views + 1 })
@@ -34,7 +37,6 @@ export async function POST(request: NextRequest) {
       if (error) throw error;
       return NextResponse.json({ views: data.views });
     } else {
-      // 创建新记录
       const { data, error } = await supabase
         .from("page_views")
         .insert({ slug, views: 1 })
@@ -50,6 +52,11 @@ export async function POST(request: NextRequest) {
 }
 
 export async function GET(request: NextRequest) {
+  const supabase = getSupabase();
+  if (!supabase) {
+    return NextResponse.json({ views: 0 });
+  }
+
   try {
     const slug = request.nextUrl.searchParams.get("slug");
 
