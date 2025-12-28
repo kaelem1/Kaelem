@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "关于",
-  description: "了解更多关于我的信息",
+  description: "履历和介绍",
 };
 
 export default function AboutPage() {
