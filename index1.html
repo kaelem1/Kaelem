@@ -1,7 +1,245 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
+<head>
+    <style>
+        :root {
+            --c-bg: #f8fafc;
+            --c-canvas: #ffffff;
+            --c-border: #cbd5e1;
+            --c-text-main: #0f172a;
+            --c-text-sub: #64748b;
+            --c-accent: #f59e0b;
+            /* Amber for highlights */
+            --font-ui: 'Inter', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', Consolas, monospace;
+        }
+
+        body {
+            background-color: var(--c-bg);
+            font-family: var(--font-ui);
+            margin: 0;
+            padding: 20px;
+            color: var(--c-text-main);
+            display: flex;
+            justify-content: center;
+        }
+
+        .diagram-canvas {
+            background-color: var(--c-canvas);
+            border: 1px solid var(--c-border);
+            width: 100%;
+            max-width: 600px;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .header {
+            border-bottom: 1px solid var(--c-border);
+            padding: 20px;
+            background: #f1f5f9;
+        }
+
+        .title {
+            font-size: 18px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 0;
+        }
+
+        .subtitle {
+            font-size: 12px;
+            color: var(--c-text-sub);
+            font-family: var(--font-mono);
+            margin-top: 4px;
+            text-transform: uppercase;
+        }
+
+        .content {
+            padding: 24px;
+            display: grid;
+            gap: 20px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px dashed var(--c-border);
+        }
+
+        .legend-item:last-child {
+            border-bottom: none;
+        }
+
+        .icon-box {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--c-border);
+            background: #f8fafc;
+            flex-shrink: 0;
+        }
+
+        .desc-box {
+            flex-grow: 1;
+        }
+
+        .term {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--c-text-main);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .explanation {
+            font-size: 14px;
+            color: var(--c-text-sub);
+            line-height: 1.5;
+        }
+
+        .timeline-viz {
+            margin-top: 20px;
+            border: 1px solid var(--c-border);
+            padding: 16px;
+            position: relative;
+        }
+
+        .viz-label {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--c-text-sub);
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .flow-step {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            border: 2px solid var(--c-text-main);
+            background: white;
+        }
+
+        .dot.highlight {
+            border-color: var(--c-accent);
+            background: var(--c-accent);
+        }
+
+        .line {
+            font-family: var(--font-mono);
+            font-size: 12px;
+        }
+
+        /* SVG Styles */
+        svg {
+            stroke: var(--c-text-main);
+            stroke-width: 2;
+            fill: none;
+        }
+    </style>
+</head>
+
 <body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
+
+    <div class="diagram-canvas">
+        <div class="header">
+            <div class="title">Git Graph Visual Decoder</div>
+            <div class="subtitle">Translation for Humans // Spec Sheet 01</div>
+        </div>
+
+        <div class="content">
+            <!-- Legend Item 1 -->
+            <div class="legend-item">
+                <div class="icon-box">
+                    <svg width="24" height="24" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="4"></circle>
+                    </svg>
+                </div>
+                <div class="desc-box">
+                    <span class="term">The Dots (圆点)</span>
+                    <div class="explanation">
+                        "游戏存档点"。每一个点代表你做完了一件事（比如写完一篇文章、修好一个BUG）并点击了保存。
+                    </div>
+                </div>
+            </div>
+
+            <!-- Legend Item 2 -->
+            <div class="legend-item">
+                <div class="icon-box">
+                    <svg width="24" height="24" viewBox="0 0 24 24">
+                        <line x1="12" y1="4" x2="12" y2="20"></line>
+                        <path d="M12 14 C 6 14, 6 10, 6 10"></path>
+                    </svg>
+                </div>
+                <div class="desc-box">
+                    <span class="term">The Lines (线条)</span>
+                    <div class="explanation">
+                        "故事线"。直的一条线是主线剧情。旁边的弯弯绕绕是支线任务（kaelem1 在折腾 `my_web` 这个支线）。
+                    </div>
+                </div>
+            </div>
+
+            <!-- Legend Item 3 -->
+            <div class="legend-item">
+                <div class="icon-box">
+                    <div
+                        style="background:var(--c-accent); color:white; font-size:10px; padding:2px 4px; border-radius:2px; font-family:monospace;">
+                        main</div>
+                </div>
+                <div class="desc-box">
+                    <span class="term">Labels (黄色标签)</span>
+                    <div class="explanation">
+                        "你在这里"。
+                        <br>
+                        <b>main</b> = 主线目前的最新进度。
+                        <br>
+                        <b>☁️ (云朵)</b> = 这个进度已经上传到云端备份了。
+                    </div>
+                </div>
+            </div>
+
+            <!-- Timeline Summary -->
+            <div class="timeline-viz">
+                <span class="viz-label">Your Project History (Read Bottom to Top)</span>
+
+                <div class="flow-step">
+                    <div class="dot highlight"></div>
+                    <div class="line">现在 (Present): 所有功能合并完成，准备发布。</div>
+                </div>
+                <div class="flow-step">
+                    <div style="width:1px; height:10px; background:#cbd5e1; margin-left:5px;"></div>
+                </div>
+                <div class="flow-step">
+                    <div class="dot"></div>
+                    <div class="line">中间 (Past): 又是修Bug，又是写"新文章"。</div>
+                </div>
+                <div class="flow-step">
+                    <div style="width:1px; height:10px; background:#cbd5e1; margin-left:5px;"></div>
+                </div>
+                <div class="flow-step">
+                    <div class="dot"></div>
+                    <div class="line">开始 (Start): 搞得差不多了，First Commit。</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 </body>
+
 </html>
