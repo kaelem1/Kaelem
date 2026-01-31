@@ -13,7 +13,7 @@
 ├── /app          # Next.js App Router 页面
 ├── /components   # UI组件
 ├── /lib          # 工具函数和核心逻辑
-└── /content      # Markdown内容（博客+作品）
+└── /content      # Markdown内容（博客+阅读清单+作品）
 ```
 
 ## 技术栈

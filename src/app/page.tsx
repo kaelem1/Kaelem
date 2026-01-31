@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { getAllPosts } from "@/lib/mdx";
+import { getAllPosts, getAllReadings } from "@/lib/mdx";
 import { format } from "date-fns";
 import { zhCN } from "date-fns/locale";
 
 export default function HomePage() {
   const recentPosts = getAllPosts().slice(0, 3);
+  const recentReadings = getAllReadings().slice(0, 3);
 
   return (
     <div className="container mx-auto max-w-4xl px-4 py-16">
@@ -21,6 +22,9 @@ export default function HomePage() {
             <Link href="/blog">阅读博客</Link>
           </Button>
           <Button variant="outline" asChild>
+            <Link href="/reading">阅读清单</Link>
+          </Button>
+          <Button variant="ghost" asChild>
             <Link href="/works">查看作品</Link>
           </Button>
         </div>
@@ -52,6 +56,39 @@ export default function HomePage() {
                   </time>
                 </article>
               </Link>
+            ))}
+          </div>
+        )}
+      </section>
+
+      <section className="mt-20">
+        <h2 className="text-2xl font-semibold mb-6">最近阅读清单</h2>
+        {recentReadings.length === 0 ? (
+          <p className="text-muted-foreground">暂无清单，发链接给我就行。</p>
+        ) : (
+          <div className="space-y-4">
+            {recentReadings.map((item) => (
+              <a
+                key={item.meta.slug}
+                href={item.meta.link}
+                target="_blank"
+                rel="noreferrer"
+                className="block group"
+              >
+                <article className="border-b pb-4">
+                  <h3 className="text-lg font-medium group-hover:text-primary transition-colors">
+                    {item.meta.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    {item.meta.description}
+                  </p>
+                  <time className="text-xs text-muted-foreground mt-2 block">
+                    {format(new Date(item.meta.date), "yyyy年M月d日", {
+                      locale: zhCN,
+                    })}
+                  </time>
+                </article>
+              </a>
             ))}
           </div>
         )}

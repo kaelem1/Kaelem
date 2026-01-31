@@ -1,7 +1,7 @@
 /**
  * [INPUT]: slug (文章标识符)
  * [OUTPUT]: Post对象 (metadata + content) 或 Post[] 列表
- * [POS]: 博客系统核心，负责解析 Markdown 文件
+ * [POS]: 内容解析核心，负责解析 Markdown 文件
  */
 
 import fs from "fs";
@@ -11,6 +11,7 @@ import readingTime from "reading-time";
 
 const BLOG_DIR = path.join(process.cwd(), "src/content/blog");
 const WORKS_DIR = path.join(process.cwd(), "src/content/works");
+const READING_DIR = path.join(process.cwd(), "src/content/reading");
 
 export interface PostMeta {
   title: string;
@@ -40,6 +41,21 @@ export interface WorkMeta {
 
 export interface Work {
   meta: WorkMeta;
+  content: string;
+}
+
+export interface ReadingMeta {
+  title: string;
+  description: string;
+  date: string;
+  tags?: string[];
+  category?: string;
+  link: string;
+  slug: string;
+}
+
+export interface ReadingItem {
+  meta: ReadingMeta;
   content: string;
 }
 
@@ -140,6 +156,36 @@ export function getAllWorks(): Work[] {
   });
 
   return works.sort(
+    (a, b) => new Date(b.meta.date).getTime() - new Date(a.meta.date).getTime()
+  );
+}
+
+export function getAllReadings(): ReadingItem[] {
+  ensureDir(READING_DIR);
+
+  const files = fs.readdirSync(READING_DIR).filter((f) => f.endsWith(".mdx") || f.endsWith(".md"));
+
+  const items = files.map((filename) => {
+    const filePath = path.join(READING_DIR, filename);
+    const fileContent = fs.readFileSync(filePath, "utf-8");
+    const { data, content } = matter(fileContent);
+    const slug = filename.replace(/\.(mdx?|md)$/, "");
+
+    return {
+      meta: {
+        title: data.title || "Untitled",
+        description: data.description || "",
+        date: data.date || new Date().toISOString(),
+        tags: data.tags || [],
+        category: data.category || "",
+        link: data.link || "",
+        slug,
+      },
+      content,
+    };
+  });
+
+  return items.sort(
     (a, b) => new Date(b.meta.date).getTime() - new Date(a.meta.date).getTime()
   );
 }
