@@ -76,11 +76,12 @@ function ensureDir(dir: string) {
 
 function generateFilename(title: string): string {
   const timestamp = Date.now();
-  const slug = slugify(title, {
+  const slugBase = slugify(title, {
     lower: true,
     strict: true,
     locale: "en",
   });
+  const slug = slugBase || "reading";
   const shortSlug = slug.slice(0, 50);
   return `${timestamp}-${shortSlug}.mdx`;
 }
