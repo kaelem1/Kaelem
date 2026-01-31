@@ -13,6 +13,28 @@ import * as path from "path";
 import slugify from "slugify";
 import { input, select } from "@inquirer/prompts";
 
+const argv = process.argv.slice(2);
+
+function getArgValue(keys: string[]): string | undefined {
+  for (let i = 0; i < argv.length; i += 1) {
+    const key = argv[i];
+    if (keys.includes(key)) {
+      const next = argv[i + 1];
+      if (next && !next.startsWith("--")) {
+        return next;
+      }
+      return "";
+    }
+  }
+  return undefined;
+}
+
+function getFlag(keys: string[]): boolean {
+  return argv.some((arg) => keys.includes(arg));
+}
+
+const SHOW_HELP = getFlag(["--help", "-h"]);
+
 const READING_DIR = path.join(process.cwd(), "src/content/reading");
 
 type ReadingType = "article" | "video" | "repo" | "thread" | "book" | "podcast" | "tool" | "other";
@@ -89,57 +111,117 @@ function generateFrontmatter(data: ReadingInput): string {
   return lines.join("\n");
 }
 
+function printHelp() {
+  console.log(`\n📚 Add reading item\n\nUsage:\n  pnpm add-reading [options]\n\nOptions:\n  --title <title>\n  --link <url>\n  --description <text>\n  --type <type>\n  --status <status>\n  --source <source>\n  --author <author>\n  --tags <tag1,tag2>\n  --yes              Skip prompts; fail if required fields missing\n  -h, --help         Show help\n\nTypes: ${TYPE_CHOICES.map((c) => c.value).join(", ")}\nStatuses: ${STATUS_CHOICES.map((c) => c.value).join(", ")}\n`);
+}
+
 async function main() {
+  if (SHOW_HELP) {
+    printHelp();
+    return;
+  }
+
   console.log("\n📚 Adding new reading item...\n");
 
-  const title = await input({
-    message: "标题 (Title):",
-    validate: (value) => (value.trim() ? true : "Title is required"),
-  });
+  const titleArg = getArgValue(["--title", "-t"]);
+  const linkArg = getArgValue(["--link", "-l"]);
+  const descriptionArg = getArgValue(["--description", "-d"]);
+  const typeArg = getArgValue(["--type"]);
+  const statusArg = getArgValue(["--status"]);
+  const sourceArg = getArgValue(["--source"]);
+  const authorArg = getArgValue(["--author"]);
+  const tagsArg = getArgValue(["--tags"]);
+  const skipPrompts = getFlag(["--yes", "-y"]);
 
-  const link = await input({
-    message: "链接 (Link):",
-    validate: (value) => {
-      if (!value.trim()) return "Link is required";
-      try {
-        new URL(value);
-        return true;
-      } catch {
-        return "Please enter a valid URL";
-      }
-    },
-  });
+  const title = titleArg
+    ? titleArg
+    : skipPrompts
+    ? ""
+    : await input({
+        message: "标题 (Title):",
+        validate: (value) => (value.trim() ? true : "Title is required"),
+      });
 
-  const description = await input({
-    message: "描述 (Description):",
-    default: "",
-  });
+  const link = linkArg
+    ? linkArg
+    : skipPrompts
+    ? ""
+    : await input({
+        message: "链接 (Link):",
+        validate: (value) => {
+          if (!value.trim()) return "Link is required";
+          try {
+            new URL(value);
+            return true;
+          } catch {
+            return "Please enter a valid URL";
+          }
+        },
+      });
 
-  const type = await select({
-    message: "类型 (Type):",
-    choices: TYPE_CHOICES,
-  });
+  if (skipPrompts) {
+    if (!title.trim()) {
+      throw new Error("Missing required --title when using --yes");
+    }
+    if (!link.trim()) {
+      throw new Error("Missing required --link when using --yes");
+    }
+  }
 
-  const status = await select({
-    message: "状态 (Status):",
-    choices: STATUS_CHOICES,
-    default: "inbox",
-  });
+  const description = descriptionArg
+    ? descriptionArg
+    : skipPrompts
+    ? ""
+    : await input({
+        message: "描述 (Description):",
+        default: "",
+      });
 
-  const source = await input({
-    message: "来源 (Source, e.g., Twitter, Medium, GitHub):",
-    default: "",
-  });
+  const type = typeArg
+    ? (typeArg as ReadingType)
+    : skipPrompts
+    ? ("article" as ReadingType)
+    : await select({
+        message: "类型 (Type):",
+        choices: TYPE_CHOICES,
+      });
 
-  const author = await input({
-    message: "作者 (Author):",
-    default: "",
-  });
+  const status = statusArg
+    ? (statusArg as ReadingStatus)
+    : skipPrompts
+    ? ("inbox" as ReadingStatus)
+    : await select({
+        message: "状态 (Status):",
+        choices: STATUS_CHOICES,
+        default: "inbox",
+      });
 
-  const tagsInput = await input({
-    message: "标签 (Tags, comma-separated):",
-    default: "",
-  });
+  const source = sourceArg
+    ? sourceArg
+    : skipPrompts
+    ? ""
+    : await input({
+        message: "来源 (Source, e.g., Twitter, Medium, GitHub):",
+        default: "",
+      });
+
+  const author = authorArg
+    ? authorArg
+    : skipPrompts
+    ? ""
+    : await input({
+        message: "作者 (Author):",
+        default: "",
+      });
+
+  const tagsInput = tagsArg
+    ? tagsArg
+    : skipPrompts
+    ? ""
+    : await input({
+        message: "标签 (Tags, comma-separated):",
+        default: "",
+      });
 
   const tags = tagsInput
     .split(",")

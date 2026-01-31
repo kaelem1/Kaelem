@@ -40,6 +40,11 @@ npm run dev
 npm run build
 ```
 
+## 脚本
+
+- `pnpm add-reading`：交互式添加阅读条目
+- `pnpm add-reading -- --title "..." --link "..." --yes`：非交互模式（自动化用）
+
 ## 写文章
 
 在 `src/content/blog/` 创建 `.mdx` 文件：
