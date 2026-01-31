@@ -8,6 +8,11 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 import readingTime from "reading-time";
+import type { ReadingItem, ReadingMeta, ReadingType, ReadingStatus } from "./reading-types";
+
+// Re-export reading types for backward compatibility
+export type { ReadingItem, ReadingMeta, ReadingFilters, ReadingType, ReadingStatus } from "./reading-types";
+export { filterReadings } from "./reading-types";
 
 const BLOG_DIR = path.join(process.cwd(), "src/content/blog");
 const WORKS_DIR = path.join(process.cwd(), "src/content/works");
@@ -41,21 +46,6 @@ export interface WorkMeta {
 
 export interface Work {
   meta: WorkMeta;
-  content: string;
-}
-
-export interface ReadingMeta {
-  title: string;
-  description: string;
-  date: string;
-  tags?: string[];
-  category?: string;
-  link: string;
-  slug: string;
-}
-
-export interface ReadingItem {
-  meta: ReadingMeta;
   content: string;
 }
 
@@ -177,9 +167,13 @@ export function getAllReadings(): ReadingItem[] {
         description: data.description || "",
         date: data.date || new Date().toISOString(),
         tags: data.tags || [],
-        category: data.category || "",
+        type: data.type || "article",
         link: data.link || "",
         slug,
+        status: data.status || "inbox",
+        author: data.author || "",
+        source: data.source || "",
+        publishedAt: data.publishedAt || "",
       },
       content,
     };

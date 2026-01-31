@@ -6,9 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "add-reading": "npx tsx scripts/add-reading.ts"
   },
   "dependencies": {
+    "@inquirer/prompts": "^8.2.0",
     "@radix-ui/react-navigation-menu": "^1.2.14",
     "@radix-ui/react-separator": "^1.1.8",
     "@radix-ui/react-slot": "^1.2.4",
@@ -24,6 +26,7 @@
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "reading-time": "^1.5.0",
+    "slugify": "^1.6.6",
     "tailwind-merge": "^3.4.0"
   },
   "devDependencies": {
