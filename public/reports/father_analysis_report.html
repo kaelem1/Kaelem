@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>体检报告深度分析与健康改善建议</title>
+    <style>
+        body { font-family: "PingFang SC", "Microsoft YaHei", sans-serif; line-height: 1.6; color: #333; max-width: 900px; margin: 0 auto; padding: 40px; background: #f9f9f9; }
+        .report-header { text-align: center; border-bottom: 2px solid #2c3e50; padding-bottom: 20px; margin-bottom: 30px; }
+        .patient-info { display: flex; justify-content: space-around; background: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 30px; }
+        .section { background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 25px; }
+        h1 { color: #2c3e50; font-size: 28px; margin: 0; }
+        h2 { color: #e67e22; border-left: 5px solid #e67e22; padding-left: 10px; font-size: 20px; margin-top: 0; }
+        .warning { color: #c0392b; font-weight: bold; background: #fdf2f2; padding: 10px; border-radius: 4px; border: 1px solid #facccc; margin: 15px 0; }
+        .indicator-table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        .indicator-table th, .indicator-table td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        .indicator-table th { background: #f2f2f2; color: #555; }
+        .abnormal { color: #e74c3c; font-weight: bold; }
+        .priority-high { background-color: #fff5f5; border-left: 5px solid #ff4d4f; }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 8px; }
+        .footer { text-align: center; color: #7f8c8d; font-size: 12px; margin-top: 50px; }
+    </style>
+</head>
+<body>
+    <div class="report-header">
+        <h1>体检报告深度分析报告</h1>
+        <p>生成日期：2026年3月18日 | 分析师：Prism (OpenClaw)</p>
+    </div>
+
+    <div class="patient-info">
+        <div><strong>姓名：</strong>向伟</div>
+        <div><strong>年龄：</strong>53岁</div>
+        <div><strong>BMI：</strong>29.5 (肥胖)</div>
+        <div><strong>身高/体重：</strong>161.5cm / 77kg</div>
+    </div>
+
+    <div class="section priority-high">
+        <h2>一、 核心健康风险：肾脏受损预警</h2>
+        <p class="warning">报告揭示了明确的早期肾损害迹象，这通常是高血压和糖尿病长期侵蚀的结果。</p>
+        <table class="indicator-table">
+            <thead>
+                <tr>
+                    <th>指标名称</th>
+                    <th>测量结果</th>
+                    <th>参考区间</th>
+                    <th>意义分析</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>肌酐 (Cr)</td>
+                    <td class="abnormal">101 μmol/L</td>
+                    <td>57-97</td>
+                    <td>肾小球滤过功能轻度下降</td>
+                </tr>
+                <tr>
+                    <td>尿微量白蛋白</td>
+                    <td class="abnormal">72.23 mg/L</td>
+                    <td>&lt; 30</td>
+                    <td>肾脏滤过膜受损，蛋白开始漏出</td>
+                </tr>
+            </tbody>
+        </table>
+        <p><strong>风险评估：</strong>处于慢性肾病（CKD）早期，如不干预，尿微量白蛋白将转化为显性蛋白尿，最终导向不可逆的肾功能衰竭。</p>
+    </div>
+
+    <div class="section">
+        <h2>二、 代谢综合征：全面失衡</h2>
+        <p>叔叔身体目前呈现出典型的“三高”共存状态，且相互加重：</p>
+        <table class="indicator-table">
+            <thead>
+                <tr>
+                    <th>类别</th>
+                    <th>关键指标</th>
+                    <th>数值</th>
+                    <th>状态分析</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>血糖</td>
+                    <td>空腹血糖 / 糖化血红蛋白</td>
+                    <td class="abnormal">6.32 / 6.2%</td>
+                    <td>糖尿病前期，血管损伤中</td>
+                </tr>
+                <tr>
+                    <td>血脂</td>
+                    <td>LDL-C / TG / TC</td>
+                    <td class="abnormal">全线升高</td>
+                    <td>极易形成动脉粥样硬化斑块</td>
+                </tr>
+                <tr>
+                    <td>尿酸</td>
+                    <td>血尿酸 (UA)</td>
+                    <td class="abnormal">494 μmol/L</td>
+                    <td>非布司他40mg可能剂量不足或饮食失控</td>
+                </tr>
+                <tr>
+                    <td>炎症</td>
+                    <td>超敏C反应蛋白</td>
+                    <td class="abnormal">29.76 mg/L</td>
+                    <td>体内存在明显急性/慢性炎症反应</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>三、 身体优化：三大核心行动</h2>
+        <h3>1. 饮食端：严格执行“极简主义”</h3>
+        <ul>
+            <li><strong>控盐：</strong>每日食盐 &lt; 5克（约一啤酒瓶盖）。盐分直接决定了肾脏的压力。</li>
+            <li><strong>戒糖：</strong>严禁含糖饮料、果汁。果糖会直接转化成尿酸并加重胰岛素抵抗。</li>
+            <li><strong>低嘌呤：</strong>戒酒，特别是啤酒；少吃内脏、浓肉汤、海鲜。</li>
+            <li><strong>优质蛋白：</strong>适量摄入瘦肉、蛋、奶，不增加肾脏负担的同时维持肌肉。</li>
+        </ul>
+
+        <h3>2. 运动端：减重是唯一出路</h3>
+        <ul>
+            <li><strong>目标：</strong>半年内减重 5kg（降至 72kg 左右）。</li>
+            <li><strong>方式：</strong>快走、游泳或太极。避免爬山、跑步等冲击性运动以保护痛风受累关节。</li>
+        </ul>
+
+        <h3>3. 呼吸端：关注鼾症</h3>
+        <ul>
+            <li><strong>建议：</strong>进行“多导睡眠呼吸监测”。夜间缺氧会直接升高晨起血压并加重肾损伤。</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>四、 医疗建议</h2>
+        <ul>
+            <li><strong>建议挂号：</strong>三甲医院 <strong>肾内科</strong> (首选) 及 <strong>内分泌科</strong>。</li>
+            <li><strong>用药讨论：</strong>咨询医生是否需要将现有的降压药调整/合并为“沙坦类 (ARB)”或“普利类 (ACEI)”，这类药在降压的同时能有效减少尿蛋白。</li>
+            <li><strong>复查频率：</strong>每3个月复查一次肾功、尿微量白蛋白/肌酐比值 (UACR) 及糖化。</li>
+        </ul>
+    </div>
+
+    <div class="footer">
+        * 本报告仅基于体检数据分析，不作为医学诊断凭证。请务必遵医嘱。
+    </div>
+</body>
+</html>
